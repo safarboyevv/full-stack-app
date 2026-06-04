@@ -1,9 +1,7 @@
 import { db } from '../config/db.js';
 import { formatPatientId } from '../utils/helpers.js';
 
-/**
- * Compiles a structured, comprehensive clinical record report for a patient.
- */
+
 export const getPatientClinicalReport = async (req, res) => {
   const patientId = parseInt(req.params.id, 10);
   try {
@@ -13,7 +11,6 @@ export const getPatientClinicalReport = async (req, res) => {
     }
     const patient = patientResult.rows[0];
 
-    // Fetch primary doctor's profile
     let doctor = null;
     if (patient.assigned_doctor_id) {
       const doctorResult = await db.query('SELECT * FROM doctors WHERE id = $1', [patient.assigned_doctor_id]);
@@ -22,13 +19,11 @@ export const getPatientClinicalReport = async (req, res) => {
       }
     }
 
-    // Fetch diagnoses
     const diagnosesResult = await db.query(
       'SELECT * FROM diagnoses WHERE patient_id = $1 ORDER BY diagnosed_date DESC',
       [patientId]
     );
 
-    // Calculations & metrics for professional insights
     const severityDistribution = diagnosesResult.rows.reduce((acc, diag) => {
       acc[diag.severity] = (acc[diag.severity] || 0) + 1;
       return acc;
@@ -73,9 +68,6 @@ export const getPatientClinicalReport = async (req, res) => {
   }
 };
 
-/**
- * Returns generic clinic-wide diagnosis stats distribution.
- */
 export const getDiagnosisReportMetrics = async (req, res) => {
   try {
     const diagnosesResult = await db.query('SELECT icd_code, description, COUNT(*) as occurs FROM diagnoses GROUP BY icd_code, description ORDER BY occurs DESC');

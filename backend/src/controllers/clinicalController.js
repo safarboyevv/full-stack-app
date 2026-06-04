@@ -1,13 +1,11 @@
 import { db } from "../config/db.js";
 
-/**
- * Tizim bazasining holati va uning telemetriyasini qaytarish
- */
+
 export const getDatabaseStatus = async (req, res) => {
   try {
     res.status(200).json({
-      inMemory: false, // Endi doim false, chunki RAM rejimi o'chirilgan
-      databaseType: "PostgreSQL Database Engine", // To'g'ridan-to'g'ri PostgreSQL ishlamoqda
+      inMemory: false, 
+      databaseType: "PostgreSQL Database Engine", 
       timestamp: new Date(),
     });
   } catch (err) {
@@ -18,9 +16,7 @@ export const getDatabaseStatus = async (req, res) => {
   }
 };
 
-/**
- * Shifoxona umumiy statistikasini (shifokorlar, bemorlar, tashxislar soni) hisoblash
- */
+
 export const getClinicalSummary = async (req, res) => {
   try {
     const docs = await db.query("SELECT COUNT(*) as count FROM doctors");

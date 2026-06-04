@@ -63,25 +63,14 @@ export const loginUser = async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      console.log(`❌ LOG: Bazada bunday username topilmadi: ${username}`);
+      console.log(`❌ LOG: User with these infos does not exist: ${username}`);
       return res.status(401).json({ error: "Invalid username credentials." });
     }
 
     const user = result.rows[0];
 
-    // ==========================================
-    // 🔍 DIK-DIK KO'Z BILAN TEKSHIRAMIZ (LOGS)
-    // ==========================================
-    console.log("\n====== 🚨 CARETRACK AUTH DEBUG ENGINE 🚨 ======");
-    console.log("➡️ FRONTENDDAN KELGAN PAROL:  ", `"${password}"`);
-    console.log("➡️ BAZADAN CHIQAN HASH:       ", `"${user.password}"`);
 
-    // Parollarni solishtiramiz
     const isMatch = await comparePassword(password, user.password.trim());
-
-    console.log("➡️ BCRYPT MATCH NATIJASI:     ", isMatch);
-    console.log("===============================================\n");
-    // ==========================================
 
     if (!isMatch) {
       return res

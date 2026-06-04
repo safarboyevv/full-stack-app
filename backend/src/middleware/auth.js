@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
-const ACCESS_SECRET = process.env.JWT_SECRET || 'caretrack_mrms_access_token_secret_key_2026';
-const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || 'caretrack_mrms_refresh_token_secret_key_2026';
+const ACCESS_SECRET = process.env.JWT_SECRET;
+const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
 
 export const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
